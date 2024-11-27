@@ -63,29 +63,28 @@ export const getAccess = async () => {
     
 };
 
-export const changeStatus = async (deviceId, status, client) => {
+export const changeStatus = async (deviceId, status, deviceType) => {
   try {
-    //const client = await getAccess();
+    const client = await getAccess();
     if (client !== null) {
       const result = await client.device.setThingStatus({
         type: "device",
         id: deviceId,
-        params: {
+        params: deviceType === 'AC' ? {
           switches: [
             {
-              switch : status
+              switch : status,
+              outlet: 0
             }
           ]
+        } : {
+          switch: status
         }
       });
-      console.log(result);
-      if (result.error) {
-        return 'Control failed';
-      } else {
-        return 'Done';
-      }
+      return result;
     } else {
       console.log('Couldnt get access to eWeLink and failed to update data');
+      return null;
     }
   } catch(e){
     console.log('Couldnt set device status: ', e);
