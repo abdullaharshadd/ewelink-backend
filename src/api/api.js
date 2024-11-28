@@ -1,6 +1,6 @@
 import express from "express";
 import { getData } from "../../data.js";
-import { changeStatus } from "../helpers/ewelink.helper.js";
+import { changeStatus, fetchAndSaveEnergyConsumptionData } from "../helpers/ewelink.helper.js";
 const app = express();
 
 // Middleware to parse JSON requests
@@ -8,6 +8,11 @@ app.use(express.json());
 
 app.get("/devices-info", async (req, res) => {
   try {
+    const { latestRequired } = req.query;
+    console.log(latestRequired);
+    if (latestRequired) {
+      await fetchAndSaveEnergyConsumptionData();
+    }
     return res.status(200).json(getData());
   } catch (error) {
     console.error("Error in /devices-info:", error.message);
