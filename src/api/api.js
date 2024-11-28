@@ -30,6 +30,7 @@ app.put("/change-device-status", async (req, res) => {
       return res.status(500).send({message : "Couldn't access eWeLink service"});
     }
     if (result.error === 0) {
+      await fetchAndSaveEnergyConsumptionData();
       return res.status(200).send({message : "Device status updated successfully"});
     } else {
       return res.status(200).send({message : "Device status not updated successfully. Most probably the device is offline."});
