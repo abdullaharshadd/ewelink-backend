@@ -8,11 +8,11 @@ app.use(express.json());
 
 app.get("/devices-info", async (req, res) => {
   try {
-    const { latestRequired } = req.query;
-    console.log(latestRequired);
-    if (latestRequired) {
+    //const { latestRequired } = req.query;
+    //console.log(latestRequired);
+    //if (latestRequired) {
       await fetchAndSaveEnergyConsumptionData();
-    }
+    //}
     return res.status(200).json(getData());
   } catch (error) {
     console.error("Error in /devices-info:", error.message);
